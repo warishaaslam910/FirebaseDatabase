@@ -1,11 +1,15 @@
 import 'package:db_proj_blogappui/pages/Splash.dart';
-import 'package:db_proj_blogappui/pages/UserBlogpage.dart';
+
 import 'package:flutter/material.dart';
 
-import 'pages/AddBlogpage.dart';
-import 'pages/Homepage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: AddBlogpage(),
+        body: Splash(),
       ),
       debugShowCheckedModeBanner: false,
     );

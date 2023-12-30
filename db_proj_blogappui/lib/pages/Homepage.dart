@@ -2,6 +2,7 @@ import 'package:db_proj_blogappui/pages/Blogpage.dart';
 import 'package:db_proj_blogappui/widgets/Blogwidget.dart';
 import 'package:db_proj_blogappui/widgets/Categorieswidget.dart';
 import 'package:db_proj_blogappui/widgets/Homeappbar.dart';
+import 'package:db_proj_blogappui/widgets/Sidebar.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
@@ -15,6 +16,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Sidebar(),
       body: ListView(
         children: [
           Homeappbar(),
