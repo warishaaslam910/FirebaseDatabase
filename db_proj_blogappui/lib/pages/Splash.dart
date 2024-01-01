@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:db_proj_blogappui/pages/Homepage.dart';
 import 'package:db_proj_blogappui/pages/Login.dart';
-import 'package:db_proj_blogappui/pages/Signup.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {

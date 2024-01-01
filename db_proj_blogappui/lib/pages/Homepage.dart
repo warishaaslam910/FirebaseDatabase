@@ -1,8 +1,8 @@
-import 'package:db_proj_blogappui/pages/Blogpage.dart';
 import 'package:db_proj_blogappui/widgets/Blogwidget.dart';
 import 'package:db_proj_blogappui/widgets/Categorieswidget.dart';
 import 'package:db_proj_blogappui/widgets/Homeappbar.dart';
 import 'package:db_proj_blogappui/widgets/Sidebar.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
@@ -83,7 +83,18 @@ class _HomepageState extends State<Homepage> {
                 SizedBox(
                   height: 12,
                 ),
-                Blogwidget(),
+                Container(
+                  height: MediaQuery.of(context)
+                      .size
+                      .height, // Set a specific height
+                  child: Blogwidget(
+                    blogID: '',
+                    blogTitle: '',
+                    blogDescription: '',
+                    ind: '',
+                    dbref: FirebaseDatabase.instance.ref("Appusers"),
+                  ),
+                ),
               ],
             ), //main column
           ) //main container

@@ -1,4 +1,10 @@
+import 'package:db_proj_blogappui/widgets/Blogwidget.dart';
+import 'package:db_proj_blogappui/widgets/UserBlogwidget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+
+int id = 0;
 
 class AddBlogpage extends StatefulWidget {
   const AddBlogpage({super.key});
@@ -10,6 +16,8 @@ class AddBlogpage extends StatefulWidget {
 class _AddBlogpageState extends State<AddBlogpage> {
   var titlecontroller = TextEditingController();
   var desccontroller = TextEditingController();
+  final dbref = FirebaseDatabase.instance.ref("Appusers");
+  final key = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,11 +30,6 @@ class _AddBlogpageState extends State<AddBlogpage> {
               padding: EdgeInsets.fromLTRB(25, 30, 25, 25),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.sort,
-                    size: 30,
-                    color: Colors.white,
-                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 30),
                     child: Text(
@@ -36,6 +39,44 @@ class _AddBlogpageState extends State<AddBlogpage> {
                         fontSize: 23,
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  ),
+                  ////////////////////////////////////// Post btn ////////////////////////////
+                  InkWell(
+                    onTap: () {
+                      id++;
+                      dbref.child(key).child("$id").set({
+                        "ID": id,
+                        "Title": titlecontroller.text,
+                        "Desc": desccontroller.text,
+                        "Dateofpost": DateTime.now().toString()
+                      }).then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserBlogwidget(
+                                    blogID: id.toString(),
+                                    blogTitle: titlecontroller.text,
+                                    blogDescription: desccontroller.text,
+                                    ind: key,
+                                    dbref: dbref)));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Blogwidget(
+                                    blogID: id.toString(),
+                                    blogTitle: titlecontroller.text,
+                                    blogDescription: desccontroller.text,
+                                    ind: key,
+                                    dbref: dbref)));
+                      }) //then
+                          .onError((error, stackTrace) {
+                        print("Error Occured!! $error");
+                      });
+                    },
+                    child: Text(
+                      "POST",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
                   Spacer(),

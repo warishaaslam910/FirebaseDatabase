@@ -1,10 +1,23 @@
 import 'package:db_proj_blogappui/widgets/Likebtn.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/Blogpage.dart';
 
 class Blogwidget extends StatefulWidget {
-  const Blogwidget({super.key});
+  final String blogID;
+  final String blogTitle;
+  final String blogDescription;
+  final String ind;
+  final DatabaseReference dbref;
+  Blogwidget(
+      {Key? key,
+      required this.blogID,
+      required this.blogTitle,
+      required this.blogDescription,
+      required this.ind,
+      required this.dbref})
+      : super(key: key);
 
   @override
   State<Blogwidget> createState() => _BlogwidgetState();
@@ -13,6 +26,51 @@ class Blogwidget extends StatefulWidget {
 class _BlogwidgetState extends State<Blogwidget> {
   @override
   Widget build(BuildContext context) {
+    return Expanded(
+      child: StreamBuilder(
+        stream: widget.dbref.child('Appusers').onValue,
+        builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          } else if (!snapshot.hasData ||
+              snapshot.data?.snapshot.value == null) {
+            return Center(child: Text("No data available."));
+          } else {
+            // Process data here
+            var data = snapshot.data!.snapshot.value;
+            List<Object?> list = [];
+
+            if (data is List) {
+              list = data;
+            } else if (data is Map) {
+              list = data.values.toList();
+            }
+
+            return ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                Object? items = list[index];
+                if (items is Map<dynamic, dynamic>) {
+                  return MyCustomWidget(items, index);
+                } else if (items == null) {
+                  return Container();
+                }
+                return ListTile(
+                  title: Text(items.toString()),
+                );
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget MyCustomWidget(Map<dynamic, dynamic> items, int index) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
