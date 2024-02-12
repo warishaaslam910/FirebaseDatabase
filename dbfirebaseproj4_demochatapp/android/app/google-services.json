@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "726924384063",
+    "project_id": "mybookapp-3301b",
+    "storage_bucket": "mybookapp-3301b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726924384063:android:fcbc7c3e1a0ff8ec93258a",
+        "android_client_info": {
+          "package_name": "com.example.dbfirebaseproj4_demochatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzMyovDT08IjfOjn35H0jtNZmLup-2yRw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

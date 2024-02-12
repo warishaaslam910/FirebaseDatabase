@@ -1,11 +1,12 @@
-import 'dart:convert';
-
 import 'package:dbfirebaseproj_3chatapp/helper/Apis.dart';
 import 'package:dbfirebaseproj_3chatapp/models/Chatuser.dart';
 import 'package:dbfirebaseproj_3chatapp/screens/Profilescr.dart';
+
+//right code
 import 'package:dbfirebaseproj_3chatapp/widgets/Chatcard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Homescreen extends StatefulWidget {
@@ -23,6 +24,27 @@ class _HomescreenState extends State<Homescreen> {
   void initState() {
     super.initState();
     APIs.getselfinfo();
+
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      print('Message:$message');
+
+      //for updating user status accordig to lifecycle events
+      //resume --active or onine
+      //pause--inactive or offline
+      if (APIs.auth.currentUser !=
+          null) //THIS COND IS GIVEN SOIF THE USER LOGOUTS IT NO LONGER SHOW ACTIVE
+      {
+        if (message.toString().contains('resume')) {
+          APIs.UpdateActiveStatus(true);
+        }
+
+        if (message.toString().contains('pause')) {
+          APIs.UpdateActiveStatus(false);
+        }
+      }
+
+      return Future.value(message);
+    });
   }
 
   @override
@@ -92,7 +114,7 @@ class _HomescreenState extends State<Homescreen> {
             ],
           ),
           body: StreamBuilder(
-              stream: APIs().getallusers(),
+              stream: APIs.getallusers(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -119,7 +141,6 @@ class _HomescreenState extends State<Homescreen> {
                                   ? searchlist[index]
                                   : list[index],
                             );
-                            // return Text('NAME : ${list[index]}');
                           });
                     } else {
                       return Center(
@@ -152,7 +173,7 @@ class _HomescreenState extends State<Homescreen> {
                 await FirebaseAuth.instance.signOut();
                 await GoogleSignIn().signOut();
               },
-              child: Icon(Icons.add_comment_rounded),
+              child: Icon(Icons.logout),
             ),
           ),
         ),

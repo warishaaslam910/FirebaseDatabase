@@ -1,19 +1,33 @@
 import 'package:dbfirebaseproj_3chatapp/screens/Splash.dart';
-import 'package:dbfirebaseproj_3chatapp/screens/auth/Loginscr.dart';
-import 'package:dbfirebaseproj_3chatapp/screens/homescreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 
 late Size mq;
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+//   SystemChrome.setPreferredOrientations(
+//           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+//       .then((value) {
+//     initializeFirebase();
+//     runApp(const MyApp());
+//   });
+// }
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  //enter full-screen
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+  //for setting orientation to portrait only
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((value) {
-    initializeFirebase();
+    _initializeFirebase();
     runApp(const MyApp());
   });
 }
@@ -39,8 +53,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-initializeFirebase() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+// initializeFirebase() async {
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+// }
+
+_initializeFirebase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }

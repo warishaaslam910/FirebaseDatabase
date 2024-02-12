@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:dbfirebaseproj_3chatapp/helper/Apis.dart';
 import 'package:dbfirebaseproj_3chatapp/screens/Homescreen.dart';
 import 'package:dbfirebaseproj_3chatapp/screens/auth/Loginscr.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -56,10 +57,10 @@ class _SplashState extends State<Splash> {
 
     setState(() {});
     void changescreen() {
-      if (FirebaseAuth.instance.currentUser != null) {
+      if (APIs.auth.currentUser != null) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Homescreen()));
-        print('CURRENT USER :${FirebaseAuth.instance.currentUser}');
+        print('CURRENT USER :${APIs.auth.currentUser}');
       } else {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Loginscr()));
@@ -68,7 +69,10 @@ class _SplashState extends State<Splash> {
 
     Timer(Duration(seconds: 6), () {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-      SystemUiOverlayStyle(systemNavigationBarColor: Colors.white);
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white,
+          statusBarColor: Colors.white));
+
       changescreen();
     });
   }
@@ -93,7 +97,7 @@ class _SplashState extends State<Splash> {
                 Align(
                   alignment: Alignment.center,
                   child: Image.asset(
-                    "assets/images/mybook_logo3.png",
+                    "assets/images/mybook_logo3.ico",
                     width: 120,
                     height: 120,
                   ),

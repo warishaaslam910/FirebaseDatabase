@@ -1,3 +1,7 @@
+//right code
+
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dbfirebaseproj_3chatapp/Snackbardialog.dart';
 import 'package:dbfirebaseproj_3chatapp/helper/Apis.dart';
@@ -7,6 +11,7 @@ import 'package:dbfirebaseproj_3chatapp/screens/auth/Loginscr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Profilescr extends StatefulWidget {
   final Chatuser user;
@@ -18,6 +23,7 @@ class Profilescr extends StatefulWidget {
 
 class _ProfilescrState extends State<Profilescr> {
   final _formkey = GlobalKey<FormState>();
+  String? _image;
   // void initState() {
   //   super.initState();
   //   APIs().getselfinfo();
@@ -48,19 +54,37 @@ class _ProfilescrState extends State<Profilescr> {
                   ),
                   Stack(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(mq.height * .1),
-                        child: CachedNetworkImage(
-                          width: mq.width * .2,
-                          height: mq.height * .2,
-                          fit: BoxFit.fill,
-                          imageUrl: widget.user.image,
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              CircleAvatar(child: Icon(Icons.person)),
-                        ),
-                      ),
+                      //profile pic here
+                      _image != null
+                          ?
+                          //local img
+                          ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(mq.height * .1),
+                              child: Image.file(
+                                File(_image!),
+                                width: mq.width * .2,
+                                height: mq.height * .2,
+                                fit: BoxFit.fill,
+                              ),
+                            )
+                          :
+                          //img from server
+                          ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(mq.height * .1),
+                              child: CachedNetworkImage(
+                                width: mq.width * .2,
+                                height: mq.height * .2,
+                                fit: BoxFit.fill,
+                                imageUrl: widget.user.image,
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    CircleAvatar(child: Icon(Icons.person)),
+                              ),
+                            ),
+
                       Positioned(
                           right: 0,
                           bottom: 0,
@@ -160,11 +184,16 @@ class _ProfilescrState extends State<Profilescr> {
             child: FloatingActionButton.extended(
               onPressed: () async {
                 Snackbardialog.showprogbar(context);
+
+                await APIs.UpdateActiveStatus(false);
                 await FirebaseAuth.instance.signOut().then((value) async {
                   await GoogleSignIn().signOut().then((value) {
+                    //FOR HIDING PROGRESS DIALOG
                     Navigator.pop(context);
+                    //FOR MOVING TO HOME SCREEN
                     Navigator.pop(context);
-                    Navigator.push(
+                    APIs.auth = FirebaseAuth.instance;
+                    Navigator.pushReplacement(
                         context, MaterialPageRoute(builder: (_) => Loginscr()));
                   });
                 });
@@ -204,14 +233,43 @@ class _ProfilescrState extends State<Profilescr> {
                           backgroundColor: Colors.white,
                           shape: CircleBorder(),
                           fixedSize: Size(mq.width * .3, mq.height * .15)),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        //pick an image
+                        final XFile? image = await picker.pickImage(
+                            source: ImageSource.gallery, imageQuality: 80);
+                        if (image != null) {
+                          print(
+                              'image path :${image.path}-- Mimetype: ${image.mimeType}');
+                        }
+                        setState(() {
+                          _image = image!.path;
+                        });
+                        APIs.updateprofilepicture(File(_image!));
+                        //hide ottom sheet after selecting
+                        Navigator.pop(context);
+                      },
                       child: Image.asset('assets/images/gallery.png')),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           shape: CircleBorder(),
                           fixedSize: Size(mq.width * .3, mq.height * .15)),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        //pick an image
+                        final XFile? image = await picker.pickImage(
+                            source: ImageSource.camera, imageQuality: 80);
+                        if (image != null) {
+                          print('image path :${image.path}');
+                        }
+                        setState(() {
+                          _image = image!.path;
+                        });
+                        APIs.updateprofilepicture(File(_image!));
+                        //hide ottom sheet after selecting
+                        Navigator.pop(context);
+                      },
                       child: Image.asset('assets/images/camera1.png'))
                 ],
               ),
