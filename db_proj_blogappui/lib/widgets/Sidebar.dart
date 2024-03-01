@@ -96,7 +96,6 @@
 import 'package:db_proj_blogappui/pages/AddBlogpage.dart';
 import 'package:db_proj_blogappui/pages/UserBlogpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import 'package:flutter/material.dart';
 

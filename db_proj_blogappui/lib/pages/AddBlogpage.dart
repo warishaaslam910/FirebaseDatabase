@@ -186,8 +186,7 @@
 // }
 
 import 'package:db_proj_blogappui/pages/UserBlogpage.dart';
-import 'package:db_proj_blogappui/widgets/Blogwidget.dart';
-import 'package:db_proj_blogappui/widgets/UserBlogwidget.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -217,9 +216,10 @@ class _AddBlogpageState extends State<AddBlogpage> {
               color: Colors.redAccent,
               padding: EdgeInsets.fromLTRB(25, 30, 25, 25),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 30),
+                    padding: EdgeInsets.only(left: 0, top: 10),
                     child: Text(
                       "My Blog",
                       style: TextStyle(
@@ -229,7 +229,9 @@ class _AddBlogpageState extends State<AddBlogpage> {
                       ),
                     ),
                   ),
+                  Spacer(),
                   ////////////////////////////////////// Post btn ////////////////////////////
+
                   InkWell(
                     onTap: () {
                       id++;
@@ -272,10 +274,12 @@ class _AddBlogpageState extends State<AddBlogpage> {
                     },
                     child: Text(
                       "POST",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Spacer(),
                 ],
               ),
             ),

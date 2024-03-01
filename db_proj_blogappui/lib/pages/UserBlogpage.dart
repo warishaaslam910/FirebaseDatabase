@@ -224,7 +224,7 @@ class _UserBlogpageState extends State<UserBlogpage> {
                   UserBlogwidget(
                     ind: key,
                     dbref: dbref,
-                  ),
+                  )
                 ],
               ), //main column
             ) //main container

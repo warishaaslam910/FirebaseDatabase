@@ -108,7 +108,7 @@ import 'package:db_proj_blogappui/widgets/Blogwidget.dart';
 import 'package:db_proj_blogappui/widgets/Categorieswidget.dart';
 import 'package:db_proj_blogappui/widgets/Homeappbar.dart';
 import 'package:db_proj_blogappui/widgets/Sidebar.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
