@@ -1,3 +1,4 @@
+import 'package:db_proj_blogappui/pages/AddBlogpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +11,15 @@ class UserBlogwidget extends StatefulWidget {
   final String blogDescription;
   final String ind;
   final DatabaseReference dbref;
+  final String imageurl;
   UserBlogwidget(
       {Key? key,
       required this.blogID,
       required this.blogTitle,
       required this.blogDescription,
       required this.ind,
-      required this.dbref})
+      required this.dbref,
+      required this.imageurl})
       : super(key: key);
 
   @override
@@ -69,8 +72,6 @@ class _UserBlogwidgetState extends State<UserBlogwidget> {
         }
       },
     );
-
-    // Center(child: Text("here is my blog"),);
   }
 
   Widget myCustomlistile(Map<dynamic, dynamic> items, int index) {
@@ -89,6 +90,7 @@ class _UserBlogwidgetState extends State<UserBlogwidget> {
                           blogDescription: '',
                           ind: '',
                           dbref: dbref,
+                          imageurl: '',
                         )),
               );
             },
@@ -100,7 +102,7 @@ class _UserBlogwidgetState extends State<UserBlogwidget> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/$index.jpg'),
+                    image: NetworkImage(items["imageurl"].toString()),
                     fit: BoxFit.cover,
                     opacity: 0.8,
                   ),
@@ -131,12 +133,42 @@ class _UserBlogwidgetState extends State<UserBlogwidget> {
                     IconButton(
                       color: const Color.fromARGB(255, 136, 132, 132),
                       icon: Icon(Icons.update),
-                      onPressed: () {},
+                      onPressed: () {
+                        String updatepostid = items["ID"].toString();
+                        if (updatepostid != null) {
+                          // int postID = postid;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddBlogpage(
+                                        updatepostid: updatepostid,
+                                        likescount: 0,
+                                      )));
+                        }
+                      },
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          String deleteid = items["ID"].toString();
+                          if (deleteid != null && deleteid.isNotEmpty) {
+                            widget.dbref
+                                .child("userBlogs")
+                                .child(key)
+                                .child("${deleteid}")
+                                .remove()
+                                .then((value) => print(
+                                    "POST DELETED ******************************************* ${deleteid}"));
+
+                            widget.dbref
+                                .child("allBlogs")
+                                .child("${deleteid}")
+                                .remove()
+                                .then((value) => print(
+                                    "POST DELETED ******************************************* ${deleteid}"));
+                          }
+                        },
                         child: Icon(
                           Icons.delete,
                           size: 24,

@@ -10,6 +10,7 @@ class UserBlogpage extends StatefulWidget {
   final String blogDescription;
   final String ind;
   final DatabaseReference dbref;
+  final String imageurl;
 
   UserBlogpage(
       {Key? key,
@@ -17,7 +18,8 @@ class UserBlogpage extends StatefulWidget {
       required this.blogTitle,
       required this.blogDescription,
       required this.ind,
-      required this.dbref})
+      required this.dbref,
+      required this.imageurl})
       : super(key: key);
 
   @override
@@ -106,6 +108,7 @@ class _UserBlogpageState extends State<UserBlogpage> {
                     blogID: '',
                     blogTitle: '',
                     blogDescription: '',
+                    imageurl: '',
                   ),
                 ],
               ), //main column

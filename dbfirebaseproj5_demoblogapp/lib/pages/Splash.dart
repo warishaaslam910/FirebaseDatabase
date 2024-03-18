@@ -36,6 +36,8 @@ class _SplashState extends State<Splash> {
                 blogDescription: '',
                 ind: '',
                 dbref: dbref,
+                imageurl: '',
+                likescount: 0,
               ),
             ));
       });

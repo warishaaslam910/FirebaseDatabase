@@ -1,200 +1,21 @@
-// import 'package:db_proj_blogappui/widgets/Blogwidget.dart';
-// import 'package:db_proj_blogappui/widgets/UserBlogwidget.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_database/firebase_database.dart';
-// import 'package:flutter/material.dart';
+import 'dart:io';
 
-// int id = 0;
-
-// class AddBlogpage extends StatefulWidget {
-//   const AddBlogpage({super.key});
-
-//   @override
-//   State<AddBlogpage> createState() => _AddBlogpageState();
-// }
-
-// class _AddBlogpageState extends State<AddBlogpage> {
-//   var titlecontroller = TextEditingController();
-//   var desccontroller = TextEditingController();
-//   final dbref = FirebaseDatabase.instance.ref("Appusers");
-//   final key = FirebaseAuth.instance.currentUser!.uid;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SingleChildScrollView(
-//         scrollDirection: Axis.vertical,
-//         child: Column(
-//           children: [
-//             Container(
-//               color: Colors.redAccent,
-//               padding: EdgeInsets.fromLTRB(25, 30, 25, 25),
-//               child: Row(
-//                 children: [
-//                   Padding(
-//                     padding: EdgeInsets.only(left: 30),
-//                     child: Text(
-//                       "My Blog",
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 23,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                   ),
-//                   ////////////////////////////////////// Post btn ////////////////////////////
-//                   InkWell(
-//                     onTap: () {
-//                       id++;
-//                       dbref.child(key).child("$id").set({
-//                         "ID": id,
-//                         "Title": titlecontroller.text,
-//                         "Desc": desccontroller.text,
-//                         "Dateofpost": DateTime.now().toString()
-//                       }).then((value) {
-//                         Navigator.push(
-//                             context,
-//                             MaterialPageRoute(
-//                                 builder: (context) => UserBlogwidget(
-//                                     blogID: id.toString(),
-//                                     blogTitle: titlecontroller.text,
-//                                     blogDescription: desccontroller.text,
-//                                     ind: key,
-//                                     dbref: dbref)));
-//                         Navigator.push(
-//                             context,
-//                             MaterialPageRoute(
-//                                 builder: (context) => Blogwidget(
-//                                     blogID: id.toString(),
-//                                     blogTitle: titlecontroller.text,
-//                                     blogDescription: desccontroller.text,
-//                                     ind: key,
-//                                     dbref: dbref)));
-//                       }) //then
-//                           .onError((error, stackTrace) {
-//                         print("Error Occured!! $error");
-//                       });
-//                     },
-//                     child: Text(
-//                       "POST",
-//                       style: TextStyle(color: Colors.white, fontSize: 18),
-//                     ),
-//                   ),
-//                   Spacer(),
-//                 ],
-//               ),
-//             ),
-//             Stack(
-//               children: [
-//                 GestureDetector(
-//                   onTap: () {
-//                     // Handle the tap event here, e.g., show a photo picker
-//                     // or navigate to a new screen for adding a photo.
-//                     print('Image Clicked!');
-//                   },
-//                   child: ClipRRect(
-//                     borderRadius: BorderRadius.circular(25),
-//                     child: Container(
-//                       width: double.infinity,
-//                       height: 300,
-//                       decoration: BoxDecoration(
-//                         color: Color(0xFFEDECF2),
-//                       ),
-//                       child: Column(
-//                         mainAxisAlignment: MainAxisAlignment.center,
-//                         children: [
-//                           IconButton(
-//                             iconSize: 55,
-//                             color: Color.fromARGB(255, 184, 181, 181),
-//                             onPressed: () {
-//                               ///////////////////////image functionality/////////////////
-//                             },
-//                             icon: Icon(Icons.add_a_photo),
-//                           ),
-//                           SizedBox(height: 8), // Adjust the spacing as needed
-//                           Text(
-//                             "Add Photo",
-//                             style: TextStyle(
-//                                 color: Colors.white,
-//                                 fontSize: 20,
-//                                 fontWeight: FontWeight.w300),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             Scrollbar(
-//               child: Column(
-//                 children: [
-//                   SizedBox(
-//                     height: 12,
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.all(12.0),
-//                     child: TextField(
-//                       controller: titlecontroller,
-//                       minLines: 2,
-//                       maxLines: 20,
-//                       decoration: InputDecoration(
-//                         labelText: "Title",
-//                         hintText: "Enter Title",
-//                         labelStyle: TextStyle(
-//                           color: Colors.redAccent,
-//                         ),
-//                         enabledBorder: OutlineInputBorder(
-//                           borderSide: BorderSide(width: 2, color: Colors.grey),
-//                         ),
-//                         focusedBorder: OutlineInputBorder(
-//                           borderSide:
-//                               BorderSide(width: 2, color: Colors.redAccent),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.all(12.0),
-//                     child: TextField(
-//                       controller: desccontroller,
-//                       minLines: 2,
-//                       maxLines: 20,
-//                       decoration: InputDecoration(
-//                         labelStyle: TextStyle(
-//                           color: Colors.redAccent,
-//                         ),
-//                         enabledBorder: OutlineInputBorder(
-//                           borderSide: BorderSide(width: 2, color: Colors.grey),
-//                         ),
-//                         focusedBorder: OutlineInputBorder(
-//                           borderSide:
-//                               BorderSide(width: 2, color: Colors.redAccent),
-//                         ),
-//                         labelText: "Description",
-//                         hintText: "Enter Description",
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
+import 'package:db_proj_blogappui/pages/Homepage.dart';
 import 'package:db_proj_blogappui/pages/UserBlogpage.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 int id = 0;
 
 class AddBlogpage extends StatefulWidget {
-  const AddBlogpage({super.key});
+  final String updatepostid;
+  int likescount;
+  AddBlogpage(
+      {super.key, required this.updatepostid, required this.likescount});
 
   @override
   State<AddBlogpage> createState() => _AddBlogpageState();
@@ -204,7 +25,20 @@ class _AddBlogpageState extends State<AddBlogpage> {
   var titlecontroller = TextEditingController();
   var desccontroller = TextEditingController();
   final dbref = FirebaseDatabase.instance.ref("testusers");
-  final key = FirebaseAuth.instance.currentUser!.uid;
+  final storageref = FirebaseStorage.instance.ref("IMAGEFOLDER");
+  final key = FirebaseAuth.instance.currentUser!.uid; //user key
+  File? blogimg;
+
+  void pickImage_gallery() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        blogimg = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,10 +50,10 @@ class _AddBlogpageState extends State<AddBlogpage> {
               color: Colors.redAccent,
               padding: EdgeInsets.fromLTRB(25, 30, 25, 25),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 0, top: 10),
+                    padding: EdgeInsets.only(left: 30),
                     child: Text(
                       "My Blog",
                       style: TextStyle(
@@ -229,57 +63,120 @@ class _AddBlogpageState extends State<AddBlogpage> {
                       ),
                     ),
                   ),
-                  Spacer(),
                   ////////////////////////////////////// Post btn ////////////////////////////
+                  Padding(
+                    padding: EdgeInsets.only(left: 166, top: 10),
+                    child: InkWell(
+                      onTap: () async {
+                        // Instead of using id, use push() to generate a unique key
+                        DatabaseReference newPostRef =
+                            dbref.child("allBlogs").push();
+                        if (widget.updatepostid != null &&
+                            widget.updatepostid.isNotEmpty) {
+                          // If updating an existing post, use the provided key
+                          newPostRef = dbref
+                              .child("allBlogs")
+                              .child(widget.updatepostid);
+                        } else {
+                          // If creating a new post, generate a new key
+                          newPostRef = dbref.child("allBlogs").push();
+                        }
 
-                  InkWell(
-                    onTap: () {
-                      id++;
-                      dbref.child("path").child(key).child("$id").set({
-                        {
-                          "ID": id,
+                        String blogID = newPostRef.key!; //post key
+
+                        Map<String, dynamic> blogdata = {
+                          "ID": blogID, // Use the generated key as ID
                           "Title": titlecontroller.text,
                           "Desc": desccontroller.text,
-                          "Dateofpost": DateTime.now().toString()
-                        }
-                      }).then((value) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UserBlogpage(),
-                            ));
+                          "Dateofpost": DateTime.now().toString(),
+                          "Likes": widget.likescount.toString(),
+                        };
 
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => UserBlogwidget(
-                        //             blogID: id.toString(),
-                        //             blogTitle: titlecontroller.text,
-                        //             blogDescription: desccontroller.text,
-                        //             ind: key,
-                        //             dbref: dbref)));
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Blogwidget(
-                        //             blogID: id.toString(),
-                        //             blogTitle: titlecontroller.text,
-                        //             blogDescription: desccontroller.text,
-                        //             ind: key,
-                        //             dbref: dbref)));
-                      }) //then
-                          .onError((error, stackTrace) {
-                        print("Error Occured!! $error");
-                      });
-                    },
-                    child: Text(
-                      "POST",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                        final refimg =
+                            await storageref.child("img").child("$key/$blogID");
+                        UploadTask uploadTask =
+                            refimg.putFile(blogimg!.absolute);
+
+                        Future.value(uploadTask).then((value) async {
+                          final downloadurl = await refimg.getDownloadURL();
+                          blogdata["imageurl"] = downloadurl;
+
+                          if (widget.updatepostid != null &&
+                              widget.updatepostid.isNotEmpty) {
+                            dbref
+                                .child("allBlogs")
+                                .child('${widget.updatepostid}')
+                                .update(blogdata)
+                                .then((value) => {
+                                      print("Sucessfully Updated home"),
+                                    })
+                                .onError((error, stackTrace) => {
+                                      print("$error"),
+                                    });
+                            dbref
+                                .child("userBlogs")
+                                .child(key)
+                                .child('${widget.updatepostid}')
+                                .update(blogdata)
+                                .then((value) => {
+                                      print("Sucessfully Updated userblogs"),
+                                    })
+                                .onError((error, stackTrace) => {
+                                      print("$error"),
+                                    });
+                          } else {
+                            dbref
+                                .child("allBlogs")
+                                .child(blogID)
+                                .set(blogdata)
+                                .then((value) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Homepage(
+                                              blogID: id.toString(),
+                                              blogTitle: titlecontroller.text,
+                                              blogDescription:
+                                                  desccontroller.text,
+                                              ind: key,
+                                              dbref: dbref,
+                                              imageurl: downloadurl,
+                                              likescount: widget.likescount,
+                                            ))))
+                                .onError((error, stackTrace) {
+                              print("Error Occured!! $error");
+                            });
+
+                            dbref
+                                .child("userBlogs")
+                                .child(key)
+                                .child(blogID)
+                                .set(blogdata)
+                                .then(
+                                  (value) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => UserBlogpage(
+                                        blogID: blogID,
+                                        blogTitle: titlecontroller.text,
+                                        blogDescription: desccontroller.text,
+                                        ind: key,
+                                        dbref: dbref,
+                                        imageurl: downloadurl,
+                                      ),
+                                    ),
+                                  ),
+                                ); //then
+                          }
+                        } //future
+                            ); //future then
+                      },
+                      child: Text(
+                        "POST",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
                     ),
                   ),
+                  Spacer(),
                 ],
               ),
             ),
@@ -287,8 +184,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    // Handle the tap event here, e.g., show a photo picker
-                    // or navigate to a new screen for adding a photo.
+                    pickImage_gallery(); ////method to call image
                     print('Image Clicked!');
                   },
                   child: ClipRRect(
@@ -299,27 +195,35 @@ class _AddBlogpageState extends State<AddBlogpage> {
                       decoration: BoxDecoration(
                         color: Color(0xFFEDECF2),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            iconSize: 55,
-                            color: Color.fromARGB(255, 184, 181, 181),
-                            onPressed: () {
-                              ///////////////////////image functionality/////////////////
-                            },
-                            icon: Icon(Icons.add_a_photo),
-                          ),
-                          SizedBox(height: 8), // Adjust the spacing as needed
-                          Text(
-                            "Add Photo",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w300),
-                          ),
-                        ],
-                      ),
+                      child: blogimg == null
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  iconSize: 55,
+                                  color: Color.fromARGB(255, 184, 181, 181),
+                                  onPressed: () {
+                                    ///////////////////////image functionality/////////////////
+                                    pickImage_gallery(); ////method to call image
+                                  },
+                                  icon: Icon(Icons.add_a_photo),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Add Photo",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            )
+                          : Image.file(
+                              blogimg!,
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ),

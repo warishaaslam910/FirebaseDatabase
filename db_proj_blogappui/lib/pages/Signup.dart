@@ -1,5 +1,6 @@
 import 'package:db_proj_blogappui/pages/Homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'Login.dart';
@@ -17,6 +18,10 @@ class _SignupState extends State<Signup> {
   var userpassword = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final dbref = FirebaseDatabase.instance.ref("testusers");
+    //final key = FirebaseAuth.instance.currentUser!.uid;
+    final key = FirebaseAuth.instance.currentUser?.uid ?? 'default_value';
+
     return Scaffold(
       body: Stack(
         children: [
@@ -158,7 +163,15 @@ class _SignupState extends State<Signup> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Homepage()));
+                                      builder: (context) => Homepage(
+                                            blogID: '',
+                                            blogTitle: '',
+                                            blogDescription: '',
+                                            ind: '',
+                                            dbref: dbref,
+                                            imageurl: '',
+                                            likescount: 0,
+                                          )));
                             });
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {

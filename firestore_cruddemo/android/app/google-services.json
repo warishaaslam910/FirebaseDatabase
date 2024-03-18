@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "223550122840",
+    "project_id": "demofirestorecrud-8b869",
+    "storage_bucket": "demofirestorecrud-8b869.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223550122840:android:4fe2e89c74288d68ee532d",
+        "android_client_info": {
+          "package_name": "com.example.firestore_cruddemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDscqhpeloQvjBA4rXOs0tEHZqZDZIMZcU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,14 +11,21 @@ class Blogwidget extends StatefulWidget {
   final String blogDescription;
   final String ind;
   final DatabaseReference dbref;
-  Blogwidget(
-      {Key? key,
-      required this.blogID,
-      required this.blogTitle,
-      required this.blogDescription,
-      required this.ind,
-      required this.dbref})
-      : super(key: key);
+  final String imageurl;
+  final String searchquery;
+  int likescount;
+
+  Blogwidget({
+    Key? key,
+    required this.blogID,
+    required this.blogTitle,
+    required this.blogDescription,
+    required this.ind,
+    required this.dbref,
+    required this.imageurl,
+    required this.searchquery,
+    required this.likescount,
+  }) : super(key: key);
 
   @override
   State<Blogwidget> createState() => _BlogwidgetState();
@@ -27,11 +34,11 @@ class Blogwidget extends StatefulWidget {
 class _BlogwidgetState extends State<Blogwidget> {
   final dbref = FirebaseDatabase.instance.ref("testusers");
   final key = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: StreamBuilder(
-        // stream: widget.dbref.child("paths").child(widget.ind).onValue,
         stream: widget.dbref.child("allBlogs").child(widget.ind).onValue,
         builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -42,7 +49,6 @@ class _BlogwidgetState extends State<Blogwidget> {
               snapshot.data?.snapshot.value == null) {
             return Center(child: Text("No data available."));
           } else {
-            // Process data here
             var data = snapshot.data!.snapshot.value;
             List<Object?> list = [];
 
@@ -59,7 +65,12 @@ class _BlogwidgetState extends State<Blogwidget> {
               itemBuilder: (context, index) {
                 Object? items = list[index];
                 if (items is Map<dynamic, dynamic>) {
-                  return myCustomlistile(items, index);
+                  final searchval = items["Title"].toString().toLowerCase();
+                  if (searchval.contains(widget.searchquery.toLowerCase())) {
+                    return myCustomlistile(items, index);
+                  } else if (widget.searchquery.isEmpty) {
+                    return myCustomlistile(items, index);
+                  }
                 } else if (items == null) {
                   return Container();
                 } else {
@@ -67,6 +78,7 @@ class _BlogwidgetState extends State<Blogwidget> {
                     title: Text(items.toString()),
                   );
                 }
+                return Container(); // This line is added to handle all cases.
               },
             );
           }
@@ -75,89 +87,6 @@ class _BlogwidgetState extends State<Blogwidget> {
     );
   }
 
-//   Widget myCustomWidget(Map<dynamic, dynamic> items, int index) {
-//     return ListView.builder(
-//       physics: NeverScrollableScrollPhysics(),
-//       shrinkWrap: true,
-//       itemCount: 6,
-//       itemBuilder: (BuildContext context, int index) {
-//         return Padding(
-//           padding: EdgeInsets.all(15),
-//           child: Column(
-//             children: [
-//               InkWell(
-//                 onTap: () {
-//                   Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                           builder: (context) => Blogpage(
-//                                 blogID: '',
-//                                 blogTitle: '',
-//                                 blogDescription: '',
-//                                 ind: '',
-//                                 dbref: dbref,
-//                               )));
-//                 },
-//                 child: Hero(
-//                   tag: "blogImage",
-//                   child: Container(
-//                     height: 200,
-//                     decoration: BoxDecoration(
-//                         color: Colors.black,
-//                         borderRadius: BorderRadius.circular(15),
-//                         image: DecorationImage(
-//                           image: AssetImage('assets/images/$index.jpg'),
-//                           fit: BoxFit.cover,
-//                           opacity: 0.8,
-//                         )),
-//                   ),
-//                 ),
-//               ),
-//               Padding(
-//                 padding: EdgeInsets.only(top: 10),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: [
-//                     Text(
-//                       "Blog Title",
-//                       style: TextStyle(
-//                         fontSize: 20,
-//                         fontWeight: FontWeight.w600,
-//                       ),
-//                     ),
-//                     //////////like btn
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                       children: [
-//                         Likebtn(
-//                           isLiked: false,
-//                           onTap: () {},
-//                         ),
-//                         Padding(
-//                           padding: EdgeInsets.only(left: 10),
-//                           child: InkWell(
-//                             onTap: () {},
-//                             child: Icon(
-//                               Icons.comment_outlined,
-//                               size: 24,
-//                               color: const Color.fromARGB(255, 136, 132, 132),
-//                             ),
-//                           ),
-//                         )
-//                       ],
-//                     ),
-
-//                     ////////////like count ////////
-//                   ],
-//                 ),
-//               )
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
   Widget myCustomlistile(Map<dynamic, dynamic> items, int index) {
     return Padding(
       padding: EdgeInsets.all(15),
@@ -168,13 +97,15 @@ class _BlogwidgetState extends State<Blogwidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Blogpage(
-                          blogID: '',
-                          blogTitle: '',
-                          blogDescription: '',
-                          ind: '',
-                          dbref: dbref,
-                        )),
+                  builder: (context) => Blogpage(
+                    blogID: widget.blogID,
+                    blogTitle: items["Title"],
+                    blogDescription: items["Desc"],
+                    ind: widget.ind,
+                    dbref: dbref,
+                    imageurl: items["imageurl"],
+                  ),
+                ),
               );
             },
             child: Hero(
@@ -185,7 +116,7 @@ class _BlogwidgetState extends State<Blogwidget> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: AssetImage('assets/images/$index.jpg'),
+                    image: NetworkImage(items["imageurl"].toString()),
                     fit: BoxFit.cover,
                     opacity: 0.8,
                   ),
@@ -193,7 +124,6 @@ class _BlogwidgetState extends State<Blogwidget> {
               ),
             ),
           ),
-          //////blog title //////
           Padding(
             padding: EdgeInsets.only(top: 10),
             child: Row(
@@ -208,14 +138,14 @@ class _BlogwidgetState extends State<Blogwidget> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-
-                //////////like btn
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Likebtn(
-                      isLiked: false,
                       onTap: () {},
+                      likescount: items["Likes"] is String
+                          ? int.tryParse(items["Likes"] ?? '0')
+                          : items["Likes"],
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
@@ -230,8 +160,6 @@ class _BlogwidgetState extends State<Blogwidget> {
                     )
                   ],
                 ),
-
-                ////////////like count ////////
               ],
             ),
           ),
